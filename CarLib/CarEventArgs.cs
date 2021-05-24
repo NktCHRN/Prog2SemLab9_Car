@@ -8,9 +8,9 @@ namespace CarLib
 {
     public class CarEventArgs : EventArgs
     {
-        public int PreviousMileage { get; private set; }
-        public double Distance { get; private set; }
-        public int MaxMileage { get; private set; }
+        public int PreviousMileage { get; private set; }                        // mileage was (km)
+        public double Distance { get; private set; }                            // distance (km)
+        public int MaxMileage { get; private set; }                             // maximum mileage (km)
         public CarEventArgs(int previousMileage, double distance, int maxMileage)
         {
             if (previousMileage >= 0)

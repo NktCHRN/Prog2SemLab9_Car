@@ -10,12 +10,12 @@ namespace CarLib
     public class Car
     {
         public event MaxMileageExcessHandler MaxMileageExceeded;
-        private const int _maxMileage = 999999;
+        private const int _maxMileage = 999999;                 // max mileage, km
         public int MaxSpeed { get; private set; }               // max speed, km/h
-        public double MaxTankCapacity { get; private set; }
-        public double FuelConsumption { get; private set; }     // litres per kilometer
+        public double MaxTankCapacity { get; private set; }     // max tank capacity, in litres
+        public double FuelConsumption { get; private set; }     // litres per 100 kilometres
         public bool IsStarted { get; private set; }
-        public int Mileage { get; private set; }
+        public int Mileage { get; private set; }                // mileage, km
         public double TankCapacity { get; private set; }        // in litres
         public Car(int maxSpeed, double maxTankCapacity, double fuelConsumption)
         {
@@ -35,21 +35,21 @@ namespace CarLib
             Mileage = 0;
             TankCapacity = 0;
         }
-        public void Refuel(double fuelCapacity)
+        public void Refuel(double fuelCapacity)                 // add more fuel to the tank
         {
             if (fuelCapacity >= 0 && TankCapacity + fuelCapacity <= MaxTankCapacity)
                 TankCapacity += fuelCapacity;
             else
                 throw new ArgumentOutOfRangeException(nameof(fuelCapacity), "Fuel capacity cannot be lower than zero or tank capacity cannot be bigger than max tank capacity");
         }
-        public void Start()
+        public void Start()                                     // starts an engine (only if there are some fuel)
         {
             if (TankCapacity > 0)
                 IsStarted = true;
             else
                 throw new InvalidOperationException("You cannot start an engine because your tank is empty");
         }
-        public double Drive(int speed, int minutes)
+        public double Drive(int speed, int minutes)             // moves the car with speed and time. May throw ArgumentOutOfRangeException or InvalidOperationException
         {
             if (minutes > 0)
             {
@@ -93,7 +93,7 @@ namespace CarLib
                 throw new ArgumentOutOfRangeException(nameof(minutes), "Quantity of minutes be lower than or equal zero");
             }
         }
-        public void Stop()
+        public void Stop()                                  // stops an engine
         {
             IsStarted = false;
         }

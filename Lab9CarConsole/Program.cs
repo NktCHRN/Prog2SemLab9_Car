@@ -52,7 +52,7 @@ namespace Lab9Console
             Console.WriteLine("Researching of pointers to functions C++ and delegates C#");
             Console.WriteLine("Variant 15");
         }
-        static void CarMenu(Car car)
+        static void CarMenu(Car car)                                    // car menu
         {
             PrintHelp(car);
             bool parsed;
