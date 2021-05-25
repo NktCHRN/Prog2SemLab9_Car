@@ -33,13 +33,13 @@ namespace Lab9StringDelConsole
                 int index = delToFindLastStatic.Invoke(str, symbol);
                 Console.WriteLine("Delegate to static method: ");
                 if (index != -1)
-                    Console.WriteLine($"Index of your symbol (starting from 0): {index}");
+                    Console.WriteLine($"Index of your last symbol (starting from 0): {index}");
                 else
                     Console.WriteLine("Your symbol was not found");
                 index = delToFindLastExemplar.Invoke(symbol);
                 Console.WriteLine("Delegate to exemplar method: ");
                 if (index != -1)
-                    Console.WriteLine($"Index of your symbol (starting from 0): {index}");
+                    Console.WriteLine($"Index of your last symbol (starting from 0): {index}");
                 else
                     Console.WriteLine("Your symbol was not found");
                 Console.WriteLine("\nDo you want to enter one more symbol? [Y/n]");

@@ -22,7 +22,7 @@ int main()
         cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
         int index = (*ptrToFunc)(str, symbol);
         if (index != -1)
-            cout << "Index of your symbol (starting from 0): " << index << endl;
+            cout << "Index of your last symbol (starting from 0): " << index << endl;
         else
             cout << "Your symbol was not found" << endl;
         cout << "\nDo you want to enter one more symbol? [Y/n]" << endl;

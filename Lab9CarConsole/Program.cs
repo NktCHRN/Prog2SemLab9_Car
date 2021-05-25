@@ -15,11 +15,9 @@ namespace Lab9Console
             ProgramInfo();
             Console.WriteLine();
             Console.WriteLine("Let's set up your car");
-            int maxSpeed;
-            double maxTankCapacity, fuelConsumption;
             bool parsed;
             Console.WriteLine("Enter the max speed (km/h):");
-            parsed = int.TryParse(Console.ReadLine(), out maxSpeed);
+            parsed = int.TryParse(Console.ReadLine(), out int maxSpeed);
             while (!parsed || maxSpeed <= 0)
             {
                 Console.WriteLine("Error: you have entered not a number or it was too low for max speed");
@@ -27,7 +25,7 @@ namespace Lab9Console
                 parsed = int.TryParse(Console.ReadLine(), out maxSpeed);
             }
             Console.WriteLine("Enter the max tank capacity (litres):");
-            parsed = double.TryParse(Console.ReadLine().Replace('.', ','), out maxTankCapacity);
+            parsed = double.TryParse(Console.ReadLine().Replace('.', ','), out double maxTankCapacity);
             while (!parsed || maxTankCapacity <= 0)
             {
                 Console.WriteLine("Error: you have entered not a number or it was too low for max tank capacity");
@@ -35,15 +33,23 @@ namespace Lab9Console
                 parsed = double.TryParse(Console.ReadLine().Replace('.', ','), out maxTankCapacity);
             }
             Console.WriteLine("Enter the average fuel consumption (l/100km):");
-            parsed = double.TryParse(Console.ReadLine().Replace('.', ','), out fuelConsumption);
+            parsed = double.TryParse(Console.ReadLine().Replace('.', ','), out double fuelConsumption);
             while (!parsed || fuelConsumption <= 0)
             {
                 Console.WriteLine("Error: you have entered not a number or it was too low for fuel consumption");
                 Console.WriteLine("Enter the average fuel consumption (l/100km) once more:");
                 parsed = double.TryParse(Console.ReadLine().Replace('.', ','), out fuelConsumption);
             }
-            Car car = new Car(maxSpeed, maxTankCapacity, fuelConsumption);
-            car.MaxMileageExceeded += Handler;
+            Console.WriteLine("Enter the brand name of your car:");
+            string brandName = Console.ReadLine();
+            while (string.IsNullOrWhiteSpace(brandName))
+            {
+                Console.WriteLine("Brand name cannot be empty or contain only whitespaces");
+                Console.WriteLine("Enter the brand name of your car once more:");
+                brandName = Console.ReadLine();
+            }
+            Car car = new Car(maxSpeed, maxTankCapacity, fuelConsumption, brandName);
+            car.MaxMileageExceeded += MileageEventsHandler;
             CarMenu(car);
         }
         static void ProgramInfo()                                       // prints information about the program
@@ -196,7 +202,7 @@ namespace Lab9Console
             Console.Clear();
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine("\t\t\tCar");
+            Console.WriteLine($"\t\t\tCar \"{car.BrandName}\"");
             Console.ResetColor();
             if (car.IsStarted)
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -205,13 +211,14 @@ namespace Lab9Console
             Console.WriteLine($"\t\t\t\tFuel tank: {car.TankCapacity:F1}/{car.MaxTankCapacity:F1} l");
             Console.WriteLine($"Mileage: {car.Mileage:000000} km");
         }
-        public static void Handler(object sender, CarEventArgs e)
+        public static void MileageEventsHandler(object sender, CarEventArgs e)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("You exceeded the max mileage!");
             Console.WriteLine($"Mileage was: {e.PreviousMileage} km");
             Console.WriteLine($"Distance: {e.Distance:F1} km");
-            Console.WriteLine($"Max mileage: {e.PreviousMileage} km");
+            Console.WriteLine($"Max mileage: {e.MaxMileage} km");
+            Console.WriteLine($"Car: {(sender as Car).BrandName}");
             Console.ResetColor();
         }
     }

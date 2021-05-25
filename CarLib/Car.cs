@@ -11,13 +11,15 @@ namespace CarLib
     {
         public event MaxMileageExcessHandler MaxMileageExceeded;
         private const int _maxMileage = 999999;                 // max mileage, km
+        public int MaxMileage { get { return _maxMileage; } }
         public int MaxSpeed { get; private set; }               // max speed, km/h
         public double MaxTankCapacity { get; private set; }     // max tank capacity, in litres
         public double FuelConsumption { get; private set; }     // litres per 100 kilometres
         public bool IsStarted { get; private set; }
         public int Mileage { get; private set; }                // mileage, km
         public double TankCapacity { get; private set; }        // in litres
-        public Car(int maxSpeed, double maxTankCapacity, double fuelConsumption)
+        public string BrandName { get; private set; }           // brand name of the car (brand and model)
+        public Car(int maxSpeed, double maxTankCapacity, double fuelConsumption, string brandName)
         {
             if (maxSpeed > 0)
                 MaxSpeed = maxSpeed;
@@ -31,6 +33,17 @@ namespace CarLib
                 FuelConsumption = fuelConsumption;
             else
                 throw new ArgumentOutOfRangeException(nameof(fuelConsumption), "Fuel consumption (litres per kilometer) cannot be lower than or equal zero");
+            if (brandName != null)
+            {
+                if (!string.IsNullOrWhiteSpace(brandName))
+                    BrandName = brandName;
+                else
+                    throw new ArgumentException("Brand name cannot be empty or contain only whitespaces", nameof(brandName));
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(brandName), "Brand name cannot be null");
+            }
             IsStarted = false;
             Mileage = 0;
             TankCapacity = 0;
@@ -72,8 +85,7 @@ namespace CarLib
                         }
                         else
                         {
-                            if (MaxMileageExceeded != null)
-                                MaxMileageExceeded(this, new CarEventArgs(Mileage, distance, _maxMileage));
+                            MaxMileageExceeded?.Invoke(this, new CarEventArgs(Mileage, distance, _maxMileage));
                             Mileage = _maxMileage;
                         }
                         return distance;
